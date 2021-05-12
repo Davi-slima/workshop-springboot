@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.exemple.course.entities.Category;
 import com.exemple.course.entities.Order;
+import com.exemple.course.entities.OrderItem;
 import com.exemple.course.entities.Product;
 import com.exemple.course.entities.User;
 import com.exemple.course.entities.enums.OrderStatus;
 import com.exemple.course.repositories.CategoryRepository;
+import com.exemple.course.repositories.OrderItemRepository;
 import com.exemple.course.repositories.OrderRepository;
 import com.exemple.course.repositories.ProductRepository;
 import com.exemple.course.repositories.UserRepository;
@@ -33,19 +35,12 @@ public class TestConfig implements CommandLineRunner{
 	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private OrderItemRepository orderitemRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
-		
-		User usuario1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
-		User usuario2 = new User(null, "Cleiton Rasta", "cleitin@gmail.com", "977777777", "123456");
-
-		Order pedido1 = new Order(null, Instant.parse("2021-03-02T21:18:07Z"),OrderStatus.PAID, usuario1);
-		Order pedido2 = new Order(null, Instant.parse("2021-04-03T03:30:10Z"), OrderStatus.WAITING_PAYMENT, usuario2);
-		Order pedido3 = new Order(null, Instant.parse("2021-04-04T21:53:22Z"), OrderStatus.WAITING_PAYMENT, usuario1);
-		
-		userRepository.saveAll(Arrays.asList(usuario1, usuario2));
-		orderRepository.saveAll(Arrays.asList(pedido1, pedido2, pedido3));
 		
 		Category categoria1 = new Category(null, "Eletronics");
 		Category categoria2 = new Category(null, "Books");
@@ -68,6 +63,23 @@ public class TestConfig implements CommandLineRunner{
 		produto5.getCategories().add(categoria2);
 		
 		productRepository.saveAll(Arrays.asList(produto1, produto2, produto3, produto4, produto5));
+		
+		User usuario1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
+		User usuario2 = new User(null, "Cleiton Rasta", "cleitin@gmail.com", "977777777", "123456");
+
+		Order pedido1 = new Order(null, Instant.parse("2021-03-02T21:18:07Z"),OrderStatus.PAID, usuario1);
+		Order pedido2 = new Order(null, Instant.parse("2021-04-03T03:30:10Z"), OrderStatus.WAITING_PAYMENT, usuario2);
+		Order pedido3 = new Order(null, Instant.parse("2021-04-04T21:53:22Z"), OrderStatus.WAITING_PAYMENT, usuario1);
+		
+		userRepository.saveAll(Arrays.asList(usuario1, usuario2));
+		orderRepository.saveAll(Arrays.asList(pedido1, pedido2, pedido3));
+		
+		OrderItem oi1 = new OrderItem(pedido1, produto1, 2, produto1.getPrice());
+		OrderItem oi2 = new OrderItem(pedido1, produto3, 1, produto4.getPrice());
+		OrderItem oi3 = new OrderItem(pedido1, produto3, 2, produto1.getPrice());
+		OrderItem oi4 = new OrderItem(pedido3, produto5, 2, produto5.getPrice());
+		
+		orderitemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 	}
 	
 	
