@@ -2,7 +2,6 @@ package com.exemple.course.config;
 
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -45,6 +44,9 @@ public class TestConfig implements CommandLineRunner{
 		Order pedido2 = new Order(null, Instant.parse("2021-04-03T03:30:10Z"), OrderStatus.WAITING_PAYMENT, usuario2);
 		Order pedido3 = new Order(null, Instant.parse("2021-04-04T21:53:22Z"), OrderStatus.WAITING_PAYMENT, usuario1);
 		
+		userRepository.saveAll(Arrays.asList(usuario1, usuario2));
+		orderRepository.saveAll(Arrays.asList(pedido1, pedido2, pedido3));
+		
 		Category categoria1 = new Category(null, "Eletronics");
 		Category categoria2 = new Category(null, "Books");
 		Category categoria3 = new Category(null, "Computers");
@@ -55,11 +57,17 @@ public class TestConfig implements CommandLineRunner{
 		Product produto4 = new Product(null, "Pc Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.00, "");
 		Product produto5 = new Product(null, "Rails for Dummies", "Cras frigilla covallis sem vel faucibus", 100.99, "");
 		
-		userRepository.saveAll(Arrays.asList(usuario1, usuario2));
-		orderRepository.saveAll(Arrays.asList(pedido1, pedido2, pedido3));
 		categoryRepository.saveAll(Arrays.asList(categoria1, categoria2, categoria3));
 		productRepository.saveAll(Arrays.asList(produto1, produto2, produto3, produto4, produto5));
 		
+		produto1.getCategories().add(categoria2);
+		produto2.getCategories().add(categoria1);
+		produto2.getCategories().add(categoria3);
+		produto3.getCategories().add(categoria3);
+		produto4.getCategories().add(categoria3);
+		produto5.getCategories().add(categoria2);
+		
+		productRepository.saveAll(Arrays.asList(produto1, produto2, produto3, produto4, produto5));
 	}
 	
 	
