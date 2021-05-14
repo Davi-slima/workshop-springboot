@@ -17,15 +17,18 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.exemple.course.entities.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "tb_order")
-public class Order implements Serializable{
+public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Integer orderStatus;
 	private Instant moment;
 	
@@ -92,8 +95,16 @@ public class Order implements Serializable{
 		this.payment = payment;
 	}
 
-	public Set<OrderItem> getOrderItems(){
+	public Set<OrderItem> getItems(){
 		return items;
+	}
+	
+	public Double getTotal() {
+		double sum = 0.0;
+		for (OrderItem x : items) {
+			sum += x.getSubTotal();
+		}
+		return sum;
 	}
 
 	@Override
@@ -120,6 +131,5 @@ public class Order implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
+
 }

@@ -38,7 +38,7 @@ public class TestConfig implements CommandLineRunner{
 	private ProductRepository productRepository;
 	
 	@Autowired
-	private OrderItemRepository orderitemRepository;
+	private OrderItemRepository orderItemRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -76,11 +76,11 @@ public class TestConfig implements CommandLineRunner{
 		orderRepository.saveAll(Arrays.asList(pedido1, pedido2, pedido3));
 		
 		OrderItem oi1 = new OrderItem(pedido1, produto1, 2, produto1.getPrice());
-		OrderItem oi2 = new OrderItem(pedido1, produto3, 1, produto4.getPrice());
-		OrderItem oi3 = new OrderItem(pedido1, produto3, 2, produto1.getPrice());
+		OrderItem oi2 = new OrderItem(pedido1, produto3, 1, produto3.getPrice());
+		OrderItem oi3 = new OrderItem(pedido2, produto3, 2, produto3.getPrice());
 		OrderItem oi4 = new OrderItem(pedido3, produto5, 2, produto5.getPrice());
 		
-		orderitemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
+		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 		
 		Payment pagamento1 = new Payment(null, Instant.parse("2021-03-02T23:18:07Z"), pedido1);
 		pedido1.setPayment(pagamento1); // ASSOCIAÇÃO DO PEDIDO 1 COM O PAGAMENTO1 
